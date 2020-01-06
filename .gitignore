@@ -131,3 +131,4 @@ dmypy.json
 bin/
 pip-selfcheck.json
 pyvenv.cfg
+cv2_data/
