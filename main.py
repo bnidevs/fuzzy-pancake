@@ -1,13 +1,24 @@
 from __future__ import print_function
 import cv2 as cv
 import argparse
+
+center_tolerance = []
+
 def detectAndDisplay(frame):
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     frame_gray = cv.equalizeHist(frame_gray)
 
+    global center_tolerance
+
     faces = face_cascade.detectMultiScale(frame_gray)
     for (x,y,w,h) in faces:
         center = (x + w//2, y + h//2)
+
+        if center[0] < center_tolerance[0][0]:
+        	print('left')
+        elif center[0] > center_tolerance[0][1]:
+        	print('right')
+
         frame = cv.ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
         faceROI = frame_gray[y:y+h,x:x+w]
         eyes = eyes_cascade.detectMultiScale(faceROI)
@@ -33,6 +44,10 @@ if not eyes_cascade.load(cv.samples.findFile(eyes_cascade_name)):
     exit(0)
 camera_device = args.camera
 cap = cv.VideoCapture(camera_device)
+
+center_tolerance.append([cap.get(3) * 0.3, cap.get(3) * 0.7])
+center_tolerance.append([cap.get(4) * 0.3, cap.get(4) * 0.7])
+
 if not cap.isOpened:
     print('--(!)Error opening video capture')
     exit(0)
