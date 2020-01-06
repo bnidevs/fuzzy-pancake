@@ -1,2 +1,2 @@
 # fuzzy-pancake
-Pattern Tracking using Video Feed
+Face Detection using Webcam Feed
